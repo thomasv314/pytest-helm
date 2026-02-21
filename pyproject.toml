@@ -1,0 +1,40 @@
+[build-system]
+requires = ["hatchling>=1.25.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "pytest-helm"
+version = "0.1.0"
+description = "Simple, ergonomic Helm manifest fixtures for pytest."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Thomas Vendetta" }]
+dependencies = [
+  "pytest>=8.0.0",
+  "python-box>=7.1.1",
+  "ruamel.yaml>=0.18.0",
+]
+keywords = ["pytest", "helm", "kubernetes", "testing"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Framework :: Pytest",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Software Development :: Testing",
+]
+
+[project.urls]
+Homepage = "https://github.com/thomasv314/pytest-helm"
+Repository = "https://github.com/thomasv314/pytest-helm"
+Issues = "https://github.com/thomasv314/pytest-helm/issues"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/pytest_helm"]
