@@ -187,20 +187,35 @@ class ManifestIndex:
         return api_version, kind, name
 
     def __repr__(self) -> str:
-        by_kind: dict[str, dict[str, str]] = {}
+        by_kind: dict[str, dict[str, tuple[str, set[str]]]] = {}
         kind_case: dict[str, str] = {}
 
         for record in self._records:
             kind_key = record.kind.casefold()
             kind_case.setdefault(kind_key, record.kind)
             by_kind.setdefault(kind_key, {})
-            by_kind[kind_key].setdefault(record.name.casefold(), record.name)
+            name_key = record.name.casefold()
+            display_name, api_versions = by_kind[kind_key].setdefault(
+                name_key, (record.name, set())
+            )
+            api_versions.add(record.api_version)
+            by_kind[kind_key][name_key] = (display_name, api_versions)
 
         kind_entries = []
         for kind_key in sorted(by_kind, key=str.casefold):
             kind = kind_case[kind_key]
-            names = sorted(by_kind[kind_key].values(), key=str.casefold)
-            names_text = ", ".join(repr(name) for name in names)
+            names = sorted(by_kind[kind_key].values(), key=lambda item: item[0].casefold())
+            formatted_names: list[str] = []
+
+            for name, api_versions in names:
+                if len(api_versions) <= 1:
+                    formatted_names.append(repr(name))
+                    continue
+
+                versions = ", ".join(sorted(api_versions, key=str.casefold))
+                formatted_names.append(repr(f"{name} ({versions})"))
+
+            names_text = ", ".join(formatted_names)
             kind_entries.append(f"{kind!r}: [{names_text}]")
 
         return f"ManifestIndex({{{', '.join(kind_entries)}}})"

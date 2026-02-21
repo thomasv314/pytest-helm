@@ -82,6 +82,28 @@ spec: {}
     )
 
 
+def test_manifest_index_repr_includes_api_versions_for_ambiguous_resources() -> None:
+    manifest_text = """
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: release-name
+spec: {}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: release-name
+spec: {}
+""".strip()
+    manifests = parse_manifest_documents(manifest_text)
+
+    assert (
+        repr(manifests)
+        == "ManifestIndex({'Deployment': ['release-name (apps/v1, extensions/v1beta1)']})"
+    )
+
+
 def test_manifest_index_get_requires_selector_format() -> None:
     manifests = parse_manifest_documents(
         """
