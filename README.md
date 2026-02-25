@@ -42,7 +42,7 @@ prod_chart = manifest_fixture(
 )
 ```
 
-Write tests to validate the YAML shape/output for different values meets your requirements:
+Write tests to validate the YAML shape/output for different values meets your requirements using simple dot-notation formats:
 
 ```python
 # tests/test_deployments.py
