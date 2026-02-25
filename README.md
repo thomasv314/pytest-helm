@@ -52,7 +52,7 @@ def test_it_provisions_one_replica_by_default(chart):
 
 def test_it_provisions_multiple_replicas_in_prod(prod_chart):
     api = prod_chart.get("deployment/api-server")
-    assert = api.spec.replicas == 3
+    assert api.spec.replicas == 3
 ```
 
 Use PDB to programatically inspect your manifests:
